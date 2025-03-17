@@ -32,7 +32,7 @@ function max_tail_v2(vec::Vector{T}) where T
         return 0, typemin(T)
     end
 
-    sum_max = 0 # typemin(T), first(vec)
+    sum_max = typemin(T)
     pos_max = 1
 
     for (pos, val) in enumerate(vec)
