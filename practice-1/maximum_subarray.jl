@@ -126,7 +126,7 @@ function max_subarray_sum_inspector(A::Vector; debug_mode=false, io=stdout)
     sum_max = typemin(eltype(A))
     i_, j_ = 0, 0
 
-    for i in eachindex(A), j in i+1:lastindex(A)
+    for i in eachindex(A), j in i:lastindex(A)
         ij_sum = Base.sum(A[i:j])
 
         if (sum_max < ij_sum)
