@@ -74,10 +74,13 @@ end
 
 #= max_subarray_sum
     Функция, находящая подпоследовательность с максимальной суммой
+
+    ЗАМЕЧАНИЕ: алгоритм, не работает, если в векторе есть отрицательные
+    элементы и тип T целочесленный. Причина тому переполнение max_tail+v
 =#
 function max_subarray_sum(vec::Vector{T}) where T
     if (!isempty(vec))
-        max_segm = max_tail = 0 # typemin(T)
+        max_segm = max_tail = typemin(T)
 
         for v in vec
             max_tail = max(max_tail+v, v)
