@@ -65,7 +65,7 @@ function max_tail_inspector(vec::Vector; debug_mode=false, io=stdout)
             pos_max = pos
         end
 
-        debug_mode && println(io, "[DEBUG]: ($pos)$sum")
+        debug_mode && println(io, "[DEBUG] ($pos)$sum")
     end
 
     return sum_max, pos_max
@@ -102,10 +102,10 @@ function max_subarray_sum_inspector(A::Vector; debug_mode=false, io=stdout)
             sum_max, i_, j_ = ij_sum, i, j
         end
 
-        debug_mode && println(io, "[DEBUG]: sum A[$i:$j] = $ij_sum")
+        debug_mode && println(io, "[DEBUG] sum A[$i:$j] = $ij_sum")
     end
 
-    debug_mode && println(io, "[DEBUG]: max subarray A[$i_:$j_] = $sum_max")
+    debug_mode && println(io, "[DEBUG] max subarray A[$i_:$j_] = $sum_max")
 
     return sum_max
 end
@@ -120,7 +120,7 @@ run_test(
      max_tail_v1,
      max_tail_inspector,
      generate_vector_rand(3, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -128,7 +128,7 @@ run_test(
      max_tail_v1,
      max_tail_inspector,
      generate_vector_rand(8, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -136,7 +136,7 @@ run_test(
      max_tail_v1,
      max_tail_inspector,
      generate_vector_rand(7, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -144,7 +144,7 @@ run_test(
      max_tail_v1,
      max_tail_inspector,
      generate_vector_rand(11, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -152,7 +152,7 @@ run_test(
      max_tail_v1,
      max_tail_inspector,
      generate_vector_rand(4, 0:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -166,7 +166,7 @@ run_test(
      max_tail_v2,
      max_tail_inspector,
      generate_vector_rand(3, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -174,7 +174,7 @@ run_test(
      max_tail_v2,
      max_tail_inspector,
      generate_vector_rand(8, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -182,7 +182,7 @@ run_test(
      max_tail_v2,
      max_tail_inspector,
      generate_vector_rand(7, -20:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
@@ -198,7 +198,7 @@ run_test(
      max_tail_v2,
      max_tail_inspector,
      generate_vector_rand(4, 0:20, 15);
-     print_expected_debug=false,
+     print_expected_debug=true,
 )
 newline()
 
