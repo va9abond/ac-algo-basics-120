@@ -1,3 +1,6 @@
+include("../inc/Utils.jl")
+
+
 #= max_tail_v1
     Рассмотрим вспомогательную функцию. В ней оптимизироваться будет только
     нижний предел суммы, верхний всегда будет равен N.
@@ -87,6 +90,35 @@ function max_subarray_sum_v1(vec::Vector{T}) where T
     end # ^^^ most likely case
 
     return typemin(T)
+end
+
+
+function max_subarray_sum_v2(
+        vec::Vector{T}; debug_mode=false, io=stdout
+    ) where T
+    if (!isempty(vec))
+        debug_mode && send_debug_info(io, "vector is not empty")
+
+        sum, sum_max = 0, typemin(T)
+        debug_mode && send_debug_info(io, "sum = $sum, sum_max = $sum_max")
+
+        for v in vec
+            sum += v
+            debug_mode && send_debug_info(io, "v = $v, sum = $sum")
+            sum_max = max(sum, sum_max)
+            sum = max(sum, 0)
+            debug_mode && send_debug_info(io, "sum = $sum, sum_max = $sum_max")
+        end
+
+        return sum_max
+    end # ^^^ most likely case
+
+    debug_mode && send_debug_info(io, "vector is empty")
+    return Nothing
+end
+
+
+function max_subarray_sum_v3(vec::Vector{T}) where T
 end
 
 
