@@ -1,6 +1,6 @@
 include("../inc/TestManager.jl")
 include("../inc/Random.jl")
-include("maximum_subarray_problem.jl")
+include("maximum_subarray.jl")
 
 
 newline() = print('\n')
