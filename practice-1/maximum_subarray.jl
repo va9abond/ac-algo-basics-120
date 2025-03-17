@@ -45,8 +45,8 @@ function max_tail_v2(vec::Vector{T}) where T
 end
 
 
-#= max_tail
-    Наиболее наивная в реализации функция. Необходима для проверки других
+#= max_tail_inspector
+    Наивная в реализации функция. Необходима для проверки других
     функций max_tail_v*
 =#
 function max_tail_inspector(vec::Vector; debug_mode=false, io=stdout)
