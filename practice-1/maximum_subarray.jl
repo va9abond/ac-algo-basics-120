@@ -68,13 +68,13 @@ function max_tail_inspector(vec::Vector; debug_mode=false, io=stdout)
 end
 
 
-#= max_subarray_sum
+#= max_subarray_sum_v1
     Функция, находящая подпоследовательность с максимальной суммой
 
     ЗАМЕЧАНИЕ: алгоритм, не работает, если в векторе есть отрицательные
     элементы и тип T целочесленный. Причина тому переполнение max_tail+v
 =#
-function max_subarray_sum(vec::Vector{T}) where T
+function max_subarray_sum_v1(vec::Vector{T}) where T
     if (!isempty(vec))
         max_segm = max_tail = typemin(T)
 
