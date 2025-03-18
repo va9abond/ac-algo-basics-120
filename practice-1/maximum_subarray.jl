@@ -93,6 +93,12 @@ function max_subarray_sum_v1(vec::Vector{T}) where T
 end
 
 
+#= max_subarray_sum_v2
+    Функция, находящая подпоследовательность с максимальной суммой
+
+    ЗАМЕЧАНИЕ: другой алгоритм, который корректно работает, в случае если
+    первые элементы массива отрицательны
+=#
 function max_subarray_sum_v2(
         vec::Vector{T}; debug_mode=false, io=stdout
     ) where T
@@ -118,7 +124,43 @@ function max_subarray_sum_v2(
 end
 
 
-function max_subarray_sum_v3(vec::Vector{T}) where T
+#= max_subarray_sum_v3
+    Функция, находящая подпоследовательность с максимальной суммой
+
+    ЗАМЕЧАНИЕ: алгорити идентичный max_subarray_sum_v2, но дополнительно,
+    возвращающий границы [begin, end] подмассива с максимальной суммой
+=#
+function max_subarray_sum_v3(
+        vec::Vector{T}; debug_mode=false, io=stdout
+    ) where T
+    sum, sum_max = zero(T), typemin(T)
+    debug_mode && send_debug_info(io, "START: sum = $sum, sum_max = $sum_max")
+
+    lb, rb, nb = 0, 0, 0 # left, right and negative bounds
+
+    for pos in eachindex(vec)
+        debug_mode && send_debug_info(io, "pos = $pos, v[pos] = $(vec[pos])")
+        debug_mode && send_debug_info(io, "before: sum = $sum, sum_max = $sum_max")
+        debug_mode && send_debug_info(io, "before: lb = $lb, rb = $rb, nb = $nb")
+
+        sum += vec[pos]
+        debug_mode && send_debug_info(io, "sum += v[pos]: sum = $sum")
+
+        if (sum_max < sum)
+            lb, rb = nb+1, pos
+            sum_max = sum
+        end
+
+        if (sum < zero(T))
+            sum = zero(T)
+            nb = pos
+        end
+
+        debug_mode && send_debug_info(io, "after: sum = $sum, sum_max = $sum_max")
+        debug_mode && send_debug_info(io, "after: lb = $lb, rb = $rb, nb = $nb")
+    end
+
+    return sum_max, lb, rb
 end
 
 
