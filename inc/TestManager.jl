@@ -9,6 +9,7 @@ function run_test(
          func::Function,
          inspector::Function,
          data...;
+         comp=isequal,
          print_data=true,
          print_expected=true,
          print_inspector_debug=false,
@@ -31,7 +32,14 @@ function run_test(
         recieved = func(data...)
     end
 
-    test_result = isequal(expected, recieved)
+    # test_result = comp(expected, recieved)
+    test_result = length(expected) == length(recieved)
+    if (test_result)
+        for i in eachindex(expected)
+            test_result = comp(expected[i], recieved[i])
+            !test_result && break
+        end
+    end
 
     printstyled("Test $TEST_NO "; color=:yellow)
     printstyled(String(Symbol(func)); color=:blue)
