@@ -1,19 +1,9 @@
-#= Description
-    A mini-library responsible for creating and running tests.
-=============#
-
+#=
+    Description
+    A mini-library responsible for creating and running tests
+=#
 
 TEST_NO = 1
-
-
-# struct Test{T, F1, F2} where {T,F1, F2}
-#     test_no::UInt
-#     test_name::String
-#     test_result::Bool
-#     test_data::T
-#     test_func::F1
-#     test_checker::F2
-# end
 
 function run_test(
          func::Function,
@@ -21,103 +11,45 @@ function run_test(
          data...;
          print_data=true,
          print_expected=true,
-         print_expected_debug=false,
-         print_recieved=true
-         # print_compact=Val{true}
+         print_inspector_debug=false,
+         print_recieved=true,
+         print_func_debug=false
     )
     global TEST_NO
 
-    if (print_expected_debug)
-        io = IOBuffer()
-        expected = inspector(data...; debug_mode=true, io)
+    if (print_inspector_debug)
+        inspector_debug_buf = IOBuffer()
+        expected = inspector(data...; debug_mode=true, io=inspector_debug_buf)
     else
         expected = inspector(data...)
     end
-    recieved = func(data...)
+
+    if (print_func_debug)
+        func_debug_buf = IOBuffer()
+        recieved = func(data...; debug_mode=true, io=func_debug_buf)
+    else
+        recieved = func(data...)
+    end
+
     test_result = isequal(expected, recieved)
 
-    print("Test $TEST_NO ")
-    printstyled(String(Symbol(func)); color=:yellow)
+    printstyled("Test $TEST_NO "; color=:yellow)
+    printstyled(String(Symbol(func)); color=:blue)
     if (test_result == true)
-        printstyled(" [ PASSED ]"; bold=true, color=:green)
+        printstyled(" [PASSED]"; bold=true, color=:green)
     else
-        printstyled(" [ FAILED ]"; bold=true, color=:red)
+        printstyled(" [FAILED]"; bold=true, color=:red)
     end
     print('\n')
 
-    print_data           && println("Data: ", data)
-    print_expected       && println("Expected: ", expected)
-    print_expected_debug && println(String(take!(io)))
-    print_recieved       && println("Recieved: ", recieved)
-    println("Time: ", "Not provided")
+    print_data            && (printstyled("Data: "; color=:yellow), println(data))
+    print_expected        && (printstyled("Expected: "; color=:yellow), println(expected))
+    print_inspector_debug && println(String(take!(inspector_debug_buf)))
+    print_recieved        && (printstyled("Recieved: "; color=:yellow), println(recieved))
+    print_func_debug      && println(String(take!(func_debug_buf)))
+    # println("Time: ", "Not provided")
 
     TEST_NO += 1
-end
-
-
-# function run_test(
-#          func::Function,
-#          inspector::Function,
-#          data...;
-#          print_data=true,
-#          print_expected=true,
-#          print_expected_debug=false,
-#          print_recieved=true,
-#          # print_compact=Val{false}
-#     )
-#     global TEST_NO
-#
-#     TEST_NO == 1 && println("========================================")
-#
-#     printstyled("> "; color=:yellow)
-#     print("Test $TEST_NO ")
-#
-#     if (print_expected_debug == true)
-#         io = IOBuffer()
-#         expected = inspector(data...; debug_mode=true, io)
-#     else
-#         expected = inspector(data...)
-#     end
-#
-#     recieved = func(data...)
-#     test_result = isequal(expected, recieved)
-#
-#     if (test_result == true)
-#         printstyled("[ PASSED ]"; bold=true, color=:green)
-#     else
-#         printstyled("[ FAILED ]"; bold=true, color=:red)
-#     end
-#     print('\n')
-#
-#     printstyled("> "; color=:yellow)
-#     println("Data\n", data)
-#     print('\n')
-#
-#     printstyled("> "; color=:yellow)
-#     println("Expected\n", expected)
-#     print_expected_debug && print(String(take!(io)))
-#     print('\n')
-#
-#     printstyled("> "; color=:yellow)
-#     println("Recieved\n", recieved)
-#     print('\n')
-#
-#     printstyled("> "; color=:yellow)
-#     println("Time: ", "Not provided")
-#
-#     TEST_NO += 1
-#     println("========================================")
-# end
-
-
-function run_test(
-         func::Function,
-         answer::T,
-         data...;
-         print_data=true,
-         print_expected=true,
-         print_recieved=true
-    ) where T <: Number
 end
 
 
@@ -129,11 +61,11 @@ function run_assert(
 
     assert_result = isequal(val, ans)
 
-    print("Assert $TEST_NO ")
+    printstyled("Assert $TEST_NO "; color=:yellow)
     if (assert_result == true)
-        printstyled("[ PASSED ]"; bold=true, color=:green)
+        printstyled("[PASSED]"; bold=true, color=:green)
     else
-        printstyled("[ FAILED ]"; bold=true, color=:red)
+        printstyled("[FAILED]"; bold=true, color=:red)
     end
     print('\n')
 end
