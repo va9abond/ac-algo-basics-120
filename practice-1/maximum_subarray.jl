@@ -99,14 +99,14 @@ function max_subarray_sum_v2(
     if (!isempty(vec))
         debug_mode && send_debug_info(io, "vector is not empty")
 
-        sum, sum_max = 0, typemin(T)
+        sum, sum_max = zero(T), typemin(T)
         debug_mode && send_debug_info(io, "sum = $sum, sum_max = $sum_max")
 
         for v in vec
             sum += v
             debug_mode && send_debug_info(io, "v = $v, sum = $sum")
             sum_max = max(sum, sum_max)
-            sum = max(sum, 0)
+            sum = max(sum, zero(T))
             debug_mode && send_debug_info(io, "sum = $sum, sum_max = $sum_max")
         end
 
