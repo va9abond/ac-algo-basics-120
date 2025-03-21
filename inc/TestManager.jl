@@ -1,5 +1,4 @@
-#=
-    Description
+#= Description
     A mini-library responsible for creating and running tests
 =#
 
@@ -52,9 +51,9 @@ function run_test(
 
     print_data            && (printstyled("Data: "; color=:yellow), println(data))
     print_expected        && (printstyled("Expected: "; color=:yellow), println(expected))
-    print_inspector_debug && println(String(take!(inspector_debug_buf)))
+    print_inspector_debug && print(String(take!(inspector_debug_buf)))
     print_recieved        && (printstyled("Recieved: "; color=:yellow), println(recieved))
-    print_func_debug      && println(String(take!(func_debug_buf)))
+    print_func_debug      && print(String(take!(func_debug_buf)))
     # println("Time: ", "Not provided")
 
     TEST_NO += 1
