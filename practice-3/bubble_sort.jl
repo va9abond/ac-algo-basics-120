@@ -48,14 +48,16 @@ function bubble_sort_perm!(
     perm = collect(firstindex(v):lastindex(v))
     sorted = false
     while (firstindex(v) < upper_bound)
-        @inbounds for i in firstindex(v):upper_bound
-            comp(by(v[i+1]), by(v[i])) && @inbounds begin
-                temp   = v[i+1]
-                v[i+1] = v[i]
-                v[i]   = temp
+        @inbounds begin
+            for i in firstindex(v):upper_bound
+                comp(by(v[i+1]), by(v[i])) && @inbounds begin
+                    temp   = v[i+1]
+                    v[i+1] = v[i]
+                    v[i]   = temp
 
-                sorted = true
-                perm[i], perm[i+1] = perm[i+1], perm[i]
+                    sorted = true
+                    perm[i], perm[i+1] = perm[i+1], perm[i]
+                end
             end
         end
 
@@ -79,6 +81,7 @@ function bubble_sort_perm(
 end
 
 function permutate_vector(v::Vector{T}, inds::Vector{Int64}) where T
+    assert(length(v) == length(inds))
     return [v[i] for i in inds]
 end
 
