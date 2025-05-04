@@ -85,6 +85,7 @@ function poly_at_x(coeffs::Vector, x; debug_mode=false, io=stdout)
 
     for c in reverse(coeffs)
         value = value*x + c
+        # value = fma(value, x, c) # T <: Real
     end
 
     return value
