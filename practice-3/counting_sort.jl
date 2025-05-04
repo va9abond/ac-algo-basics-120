@@ -1,6 +1,5 @@
 function counting_sort!(v::Vector{Int64})
-    min = findmin(v)[1]
-    max = findmax(v)[1]
+    min, max = extrema(v)
     size, shift = max-min+1, min
 
     MAX_SIZE = 200000
@@ -33,4 +32,16 @@ function counting_sort!(v::Vector{Int64})
     end
 
     return v
+end
+
+
+function test()
+    vec = [3, 11, 21, 19, 28, 6, 24, 24, 21, 6, 18, 14, 10, 1, 18]
+    println("vec: $(vec')")
+    println("is sorted: $(Base.issorted(vec))")
+    println()
+
+    counting_sort!(vec)
+    println("vec: $(vec')")
+    println("is sorted: $(Base.issorted(vec))")
 end
