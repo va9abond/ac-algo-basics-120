@@ -32,7 +32,7 @@ function insertion_sort(
     return insertion_sort!(copy(v); comp=comp, by=by, order=order)
 end
 
-function main()
+function test()
     v  = [8, 0, 1, 3, 2, 7, 4, 5, 9, 6]
     vn = [-8, 0, -10, 3, -20, 7, 4, 5, 9, 6]
 

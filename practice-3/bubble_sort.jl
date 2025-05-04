@@ -85,7 +85,7 @@ function permutate_vector(v::Vector{T}, inds::Vector{Int64}) where T
     return [v[i] for i in inds]
 end
 
-function main()
+function test()
     v  = [8, 0, 1, 3, 2, 7, 4, 5, 9, 6]
     vn = [-8, 0, -10, 3, -20, 7, 4, 5, 9, 6]
 
