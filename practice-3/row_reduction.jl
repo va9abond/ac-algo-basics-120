@@ -23,6 +23,7 @@ function reduce_down!(A::AbstractMatrix; eps=1e-7)
         pr = row+drow-1 # pivot row, pivot = A[pr, pr]
         pr != row && swap!( view(A, row, :), view(A, pr, :) )
                    # swap!(@view(A[k,k:end]), @view(A[k+Δk-1,k:end]))
+
         for i in row+1:size(A,1)
             t = A[i,row]/A[row,row]
             @views A[i, row:end] .= A[i, row:end] .- t .* A[row, row:end]
