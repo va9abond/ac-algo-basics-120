@@ -9,9 +9,10 @@
     symbol.
 
     The usual arithmetic operators are overloaded to work with polynomials as
-    well as with combinations of polynomials and scalars. However, operations
-    involving two polynomials of different variables causes an error except
-    those involving a constant polynomial.
+    well as with combinations of polynomials and scalars.
+
+    # However, operations involving two polynomials of different variables
+    # causes an error except those involving a constant polynomial.
 
     Examples
 
@@ -185,7 +186,7 @@ function showop(::MIME"text/plain", op)
          "-" => " - ",
          "l-" => "-"
     )
-    get(gd, op, "")
+    get(d, op, "")
 end
 
 
@@ -287,5 +288,3 @@ end
 #     return value
 # end
 
-# TODO
-# - Base.copy(p::Poly{T, X}) where {T, X} = Poly{T, Var(X)}(copy(p.coeffs))
