@@ -50,7 +50,7 @@ struct Poly{T, X}
     # non-copy alternative
     function Poly{T, X}(copy::Val{false}, coeffs::AbstractVector{T}) where {T, X}
         # println("ctor: Poly{T, X}(Val{false}, coeffs)")
-        # assert( iszero(coeffs[end]) == false )
+        @assert iszero(coeffs[end]) == false
         return new{T, X}(coeffs)
     end
 
