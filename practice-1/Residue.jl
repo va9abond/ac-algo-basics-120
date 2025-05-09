@@ -1,44 +1,31 @@
 include("gcd.jl")
 
+# XXX Нужен ли здесь тип T. Ведь такой же тип имеет модуль M
 struct Residue{M, T}
     rem::T
 
-    function Residue{M}(x::T) where T  # <: Integer
-        @assert typeof(M) == T 
-        return new{M,T}(mod(x, M))
+    function Residue{M}(x::T) where {M, T}
+        # XXX А точно ли типы M и T должны совпадать? Как тогда сделать кольцо
+        #     многочленов Z5[x]? Здесь же модуль это 5, а остаток это многочелен
+        @assert typeof(M) == T
+        return new{M, T}(mod(x, M))
     end
 
-    # function Residue{M}(x::T) where T <: AbstractFloat
-    #     error("[ERROR]: denied T <: AbstractFloat")
-    # end
-
-    function Residue{M}(check::Val{false}, x::T) where T
-        return new{T, M}(x)
+    function Residue{M}(check::Val{false}, x::T) where {M, T}
+        return new{M, T}(x)
     end
 
 end
 
-function construct_residue(M::T, x::T) where T
-    return Residue{M}(false, x)
+function Base.:+(r1::R, r2::R) where {M, T, R <: Residue{M, T}}
+    return Residue{M}(r1.rem + r2.rem)
 end
 
-function Base. +=(lhs::T, rhs::T) where {M, T <: Residue{T, M}}
-    return Residue{M}(lhs.rem + rhs.rem)
+function Base.:-(r1::R, r2::R) where {M, T, R <: Residue{M, T}}
+    return Residue{M}(r1.rem - r2.rem)
 end
 
-function Base. +=(lhs::T, rhs::S) where {S, M, T <: Residue{T, M}}
-    return Residue{M}(lhs.rem + rhs)
-end
-
-function Base. +(lhs::Residue{T,M}, rhs::Residue{T,M}) where {T, M}
-    return Residue{M}(lhs.rem + rhs.rem)
-end
-
-function Base. -(lhs::Residue{T,M}, rhs::Residue{T,M}) where {T, M}
-    return Residue{M}(lhs.rem - rhs.rem)
-end
-
-function inverse(x::Residue{T,M}) where {T, M}
+function inverse(x::Residue{M, T}) where {M, T}
     gcd, u, v = cst_gcdx(x, M) # gcd(x, M) = gcd = x*u + M*v
     if (gcd != one(T))
         # error("[ERROR]: reminder is irreversible")
