@@ -93,7 +93,7 @@ end
 
 
 """
-Вычисление многочлена и его производной в точке с помощью схемы Горнера
+Вычисление значения многочлена и его производной в точке с помощью схемы Горнера
 """
 function poly_derived_at_x(coeffs::Vector, x; debug_mode=false, io=stdout)
     value_type = promote_type(eltype(coeffs), typeof(x))
