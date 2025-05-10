@@ -104,6 +104,46 @@ end
 
 
 
+#= polyval and polyder =#
+
+function value(p::P, x::S) where {T, X, P <: Poly{T, X}, S}
+    promoted_t = promoted_type(T, S)
+
+    value = zero(promoted_t)
+    for coeff in reverse(p.coeffs)
+        value = value*x + coeff
+    end
+
+    return value
+end
+
+function derivation(p::P) where {T, X, P <: Poly{T, X}}
+    deg(p) == 0 && return zero(P)
+
+    cs = zeros( promote_type(T, Int64), deg(p) )
+    for i in eachindex(cs)
+        cs[i] = p.coeffs[i+1]*i
+    end
+
+    return __construct_poly(cs, X)
+end
+
+function gorner(p::P, x::S) where {T, X, P <: Poly{T, X}, S}
+    promoted_t = promote_type(T, S)
+
+    value = zero(promoted_t)
+    value_derived = zero(promoted_t)
+
+    for coeff in reverse(p.coeffs)
+        value_derived = value_derived*x + value
+        value = value*x + coeff
+    end
+
+    return value, value_derived
+end
+
+
+
 #= Print Poly =#
 
 function showop(io, op)
