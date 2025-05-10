@@ -1,7 +1,7 @@
 include("../practice-1/Poly.jl")
 
 
-function newthon(p::P, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20) where {T, X, P <: Poly{T, X}}
+function newton(p::P, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20) where {T, X, P <: Poly{T, X}}
     # x0 - начальное приближение корня функции f(x)
     # Пока не выполнено условие остановки итеративно приближаемся к значению корня функции
 
@@ -27,5 +27,5 @@ end
 p = Poly([1.0, 1.0, 1.0, 1.0])
 x0 = 0.0
 println("p(x) = ", p)
-println("\tnewthon(...) = $(newthon(p, x0))")
+println("\tnewton(...) = $(newton(p, x0))")
 println()

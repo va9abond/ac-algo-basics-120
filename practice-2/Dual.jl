@@ -1,7 +1,7 @@
 """
     Dual numbers
 """
-struct Dual{T <: Real}
+struct Dual{T <: Number}
     a::T
     b::T
 
@@ -25,10 +25,10 @@ function promote(x::T, y::S) where {T, S}
 end
 
 Base.convert(::Type{Dual{T}}, x::Dual) where T = Dual{T}(x.a, x.b)
-Base.convert(::Type{Dual{T}}, x::S) where {T, S <: Real} = Dual{T}(x, zero(x))
+Base.convert(::Type{Dual{T}}, x::S) where {T, S <: Number} = Dual{T}(x, zero(x))
 
 Base.promote_rule(::Type{Dual{T}}, ::Type{Dual{S}}) where {T, S} = Dual{promote_type(T, S)}
-Base.promote_rule(::Type{Dual{T}}, ::Type{S}) where {T, S <: Real} = Dual{promote_type(T, S)}
+Base.promote_rule(::Type{Dual{T}}, ::Type{S}) where {T, S <: Number} = Dual{promote_type(T, S)}
 
 
 
@@ -38,21 +38,21 @@ Base.one(::Type{Dual{T}}) where T = Dual(one(T), zero(T))
 
 
 Base.:+(d1::D, d2::D) where {T, D <: Dual{T}} = Dual(d1.a + d2.a, d1.b + d2.b)
-Base.:+(x::Dual, y::Real) = +(promote(x, y)...)
-Base.:+(x::Real, y::Dual) = +(promote(x, y)...)
+Base.:+(x::Dual, y::Number) = +(promote(x, y)...)
+Base.:+(x::Number, y::Dual) = +(promote(x, y)...)
 
 Base.:-(d::Dual) = Dual(-d.a, -d.b)
 Base.:-(d1::D, d2::D) where {T, D <: Dual{T}} = d1 + (-d2)
-Base.:-(d::Dual, s::Real) = -(promote(d, s)...)
-Base.:-(s::Real, d::Dual) = -(promote(d, s)...)
+Base.:-(d::Dual, s::Number) = -(promote(d, s)...)
+Base.:-(s::Number, d::Dual) = -(promote(d, s)...)
 
 Base.:*(d1::D, d2::D) where {T, D <: Dual{T}} = Dual(d1.a * d2.a, d1.b*d2.a + d1.a*d2.b)
-Base.:*(d::Dual, s::Real) = *(promote(d, s)...)
-Base.:*(s::Real, d::Dual) = *(promote(d, s)...)
+Base.:*(d::Dual, s::Number) = *(promote(d, s)...)
+Base.:*(s::Number, d::Dual) = *(promote(d, s)...)
 
 Base.:/(d1::D, d2::D) where {T, D <: Dual{T}} = Dual(d1.a / d2.a, (d1.b*d2.a - d1.a*d2.b)/(d2.a*d2.a))
-Base.:/(d::D, s::S) where {T, D <: Dual{T}, S <: Real} = /(promote(d, s)...)
-Base.:/(s::S, d::D) where {T, D <: Dual{T}, S <: Real} = /(promote(d, s)...)
+Base.:/(d::D, s::S) where {T, D <: Dual{T}, S <: Number} = /(promote(d, s)...)
+Base.:/(s::S, d::D) where {T, D <: Dual{T}, S <: Number} = /(promote(d, s)...)
 
 Base.sin(d::D) where {T, D <: Dual{T}} = Dual(sin(d.a), cos(d.b))
 Base.cos(d::D) where {T, D <: Dual{T}} = Dual(cos(d.a), -sin(d.b))
@@ -81,14 +81,14 @@ println("f(d) = $(f(d))")
 
 
 
-function valdiff(f::Function, x::T) where T <: Real
+function valdiff(f::Function, x::T) where T
     x = Dual(x, one(x))
     d = f(x)
     return d.a, d.b
 end
 
 
-function newthon(f::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
+function newton(f::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
     iter = 0
     xn = x0
     xn_1 = x0
@@ -108,7 +108,7 @@ function newthon(f::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
     return xn
 end
 
-x0 = 4.0
-println("f(x) = x^2 - 17, x0 = $x0")
-println("\tnewthon(...) = $(newthon(x->x^2-17, x0))")
+x0 = Complex(2.0, 0.0)
+println("f(z) = z^3 - 1")
+println("\tnewton(...) = $(newton(z->z^3 - 1, x0))")
 println()
