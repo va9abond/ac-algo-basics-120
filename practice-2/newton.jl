@@ -16,7 +16,7 @@ function newton(f::Function, df::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter
         iter += 1
     end
 
-    iter == nmax_iter && printstyled("[INFO] iter == nmax_iter\n", color:red)
+    iter == nmax_iter && printstyled("[INFO] iter == nmax_iter\n", color=:red)
 
     return xn
 end

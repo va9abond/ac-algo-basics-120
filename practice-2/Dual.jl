@@ -65,28 +65,12 @@ Base.log(d::D) where {T, D <: Dual{T}} = Dual( log(d.a), d.b/d.a )
 Base.:^(d::D, n::Int) where {T, D <: Dual{T}} = Dual( d.a^n, d.b * n*d.a^(n-1) )
 
 
-f(x) = 3 + x*log(x^2)
-df(x) = log(x^2) + 2
-x = 5
-
-println("f(x) = ", f(x))
-println("df(x) = ", df(x))
-
-# d = Dual(3.0, 0.0) + Dual(5.0, 1.0) * log(Dual(5.0, 1.0)^2)
-# println("d.a = $(d.a)")
-# println("d.b = $(d.b)")
-
-d = Dual(5.0, 1.0)
-println("f(d) = $(f(d))")
-
-
 
 function valdiff(f::Function, x::T) where T
     x = Dual(x, one(x))
     d = f(x)
     return d.a, d.b
 end
-
 
 function newton(f::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
     iter = 0
@@ -103,12 +87,30 @@ function newton(f::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
         iter += 1
     end
 
-    iter == nmax_iter && printstyled("[INFO] iter == nmax_iter\n", color:red)
+    iter == nmax_iter && printstyled("[INFO] iter == nmax_iter\n", color=:red)
 
     return xn
 end
 
-x0 = Complex(2.0, 0.0)
-println("f(z) = z^3 - 1")
-println("\tnewton(...) = $(newton(z->z^3 - 1, x0))")
-println()
+
+function test()
+    f(x) = 3 + x*log(x^2)
+    df(x) = log(x^2) + 2
+    x = 5
+
+    println("f(x) = ", f(x))
+    println("df(x) = ", df(x))
+
+    # d = Dual(3.0, 0.0) + Dual(5.0, 1.0) * log(Dual(5.0, 1.0)^2)
+    # println("d.a = $(d.a)")
+    # println("d.b = $(d.b)")
+
+    d = Dual(5.0, 1.0)
+    println("f(d) = $(f(d))")
+
+
+    x0 = Complex(2.0, 0.0)
+    println("f(z) = z^3 - 1")
+    println("\tnewton(...) = $(newton(z->z^3 - 1, x0))")
+    println()
+end
