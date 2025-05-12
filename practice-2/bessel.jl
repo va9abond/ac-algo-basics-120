@@ -1,27 +1,25 @@
 using GLMakie
 using Colors
 
-function bessel(x::T, α::Int64; atol=1e-8, nmax_iter=100) where T <: Union{Float32, Float64}
-    J = zero(promote_type(T, big(Int64)))
+function bessel(x::T, α::Int64) where T <: Number
+    J, j = zero(T), zero(T)
 
     K = x*x / 4
-
+    j = ((x/2)^α) / factorial(α) # J (m = 0)
     m = 0
-    j = ((x/2)^α) / big(factorial(α)) # J (m = 0)
-    while m < nmax_iter
-        J += j
+    while J != (J+=j)
         m += 1
-
-        j *= (-K) * ( 1 / (m*(m+α)) )
-        # j = -j*K/m/(m+α)
-        isless(abs(j), atol) && break
+        j = -j*K/m/(m+α)
     end
 
     return J
 end
 
 function test()
-    x_range = range(0, 40, length=700)
+    x_range = range(0.0, 50, length=700)
+
+    # x_range = range(BigFloat(0.0), 50, length=700)
+    # setprecision(BigFloat, 3000)
 
     J₀ = bessel.(x_range, 0)
     J₁ = bessel.(x_range, 1)
