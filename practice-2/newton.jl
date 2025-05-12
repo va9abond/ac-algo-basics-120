@@ -1,4 +1,4 @@
-function newton(f::Function, df::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
+function newton(delta::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter=20)
     # x0 - начальное приближение корня функции f(x)
     # Пока не выполнено условие остановки итеративно приближаемся к значению корня функции
 
@@ -6,10 +6,10 @@ function newton(f::Function, df::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter
     xn = x0
     xn_1 = x0
     while (iter < nmax_iter)
-        fxn_1 = f(xn_1)
+        # fxn_1 = f(xn_1)
         isless( abs(fxn_1), atolf ) && break
 
-        xn = xn_1 - fxn_1/df(xn_1)
+        xn = xn_1 - delta(xn_1)
 
         isless( abs(xn_1 - xn), atolx ) && break
         xn_1 = xn
@@ -20,6 +20,8 @@ function newton(f::Function, df::Function, x0; atolf=1e-8, atolx=1e-8, nmax_iter
 
     return xn
 end
+
+function delta(f::Function, df::Function, )
 
 x0 = 4.0
 println("f(x) = x^2 - 17, df(x) = 2x, x0 = $x0")
