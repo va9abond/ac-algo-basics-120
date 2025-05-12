@@ -5,12 +5,14 @@
 # a^y * z^t = x
 
 # log_a(x)
-function xlog(a, x; eps=1e-8)
+function xlog(a, x; eps=1e-16)
     z = x
     t = 1
     y = 0
 
     # INVARIANT: a^y * z^t = x | a^0 * x^1 = x
+    # z^t = a^dy
+    # dy - погрешность
     while z > a || z < 1/a || t > eps
         if z > a
             z /= a
