@@ -176,7 +176,8 @@ function test(f::Function)
                           0 0 9]
     display(A)
     f(A)
-    display(A)
+    f(transpose(A))
+    display(transpose(A))
 
     println()
     println()
