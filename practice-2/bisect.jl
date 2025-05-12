@@ -5,16 +5,17 @@
 Необходимое условие на функцию f:
     . Непрерывность на интервале (a, b)
 """
-function bisect(f::Function, a=0.0, b=1.0; atolf=1e-8, atolx=1e-8, nmax_iter=40)
+function bisect(f::Function, a=0.0, b=1.0; atolf=1e-8, atolx=1e-16, nmax_iter=40)
     interval_size = abs(a - b)
     m = a + interval_size / 2
     niter = 0
+    sign_fa = xsign(f(a))
 
     while (niter < nmax_iter && isless(atolx, interval_size))
         fm = f(m)
         isapprox(fm, zero(Float64); atol=atolf) && return m
 
-        if (xsign(f(a)) == xsign(fm)) # go right interval
+        if (sign_fa == xsign(fm)) # go right interval
             a, b = m, b
         else # go left interval
             a, b = a, m
@@ -43,5 +44,5 @@ println("sin(x) on I=[-1.0, 1.0], x = $(bisect(sin, -1.0, 1.0))")
 println("cos(x) on I=[-1.0, 2.0], x = $(bisect(cos, -1.0, 2.0))")
 println("2x^2 + 3x - 2 = (x-1/2)(2x+4) on I=[0.0, 1.0], x = $(bisect(x->2x^2+3x-2, 0.0, 1.0))")
 println("2x^2 + 3x - 2 = (x-1/2)(2x+4) on I=[-5.0, -1.0], x = $(bisect(x->2x^2+3x-2, -5.0, -1.0))")
-println("2x^2 + 3x - 2 = (x-1/2)(2x+4) on I=[-10.0, -1.0], x = $(bisect(x->2x^2+3x-2, -10.0, -1.0; nmax_iter=150))")
+println("2x^2 + 3x - 2 = (x-1/2)(2x+4) on I=[-10.0, -1.0], x = $(bisect(x->2x^2+3x-2, -10.0, -1.0; nmax_iter=10000000))")
 println("sin(x) on I=[pi/2, 3pi/2], x = $(bisect(sin, pi/2, 3pi/2))")
