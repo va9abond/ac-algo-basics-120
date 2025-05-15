@@ -70,7 +70,8 @@ end
 __typealias(::Type{P}) where {T, X, P <: Poly{T, X}} = "Poly"
 
 coeffs(p::P)   where {T, X, P <: Poly{T, X}} = p.coeffs
-__coeffs(p::P) where {T, X, P <: Poly{T, X}} = Tuple(p.coeffs)
+poly2tuple(p::P) where {T, X, P <: Poly{T, X}} = Tuple(p.coeffs)
+tuple2poly(cs::NTuple{N, T}) where {N, T} = __construct_poly(collect(cs), :x)
 
 # Base.iszero(p::P)     where {T, X, P <: Poly{T, X}} = all(iszero, values(p))
 Base.copy(p::P)       where {T, X, P <: Poly{T, X}} = P(Val(false), copy(p.coeffs))
