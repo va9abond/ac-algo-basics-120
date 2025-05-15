@@ -11,7 +11,10 @@ function newton(delta::Function, x0; atol=1e-8, nmax_iter=20)
         n += 1
     end
 
-    n == nmax_iter && return nothing
+    if (n == nmax_iter)
+        @warn "The maximum number of iterations ($nmax_iter) has been reached"
+        return nothing
+    end
 
     return x
 end
